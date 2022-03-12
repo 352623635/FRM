@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e355a077-7b0a-4c54-9a35-d86ff23a5529" name="默认的" comment="默认的" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="25u8DxiUqbnTmiEKQdoXrXMgF4A" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="16.14.0" />
+    <property name="javascript.nodejs.core.library.typings.version" value="16.11.26" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\项目保存\koa2_meta_api\static" />
+      <recent name="D:\项目保存\koa2_meta_api\static\feature" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="I:\meta\koa2_meta_api\router" />
+      <recent name="D:\项目保存\koa2_meta_api\static" />
+      <recent name="D:\项目保存\koa2_meta_api\router\web" />
+      <recent name="D:\项目保存\koa2_meta_api\router\api" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e355a077-7b0a-4c54-9a35-d86ff23a5529" name="默认的" comment="" />
+      <created>1646365494807</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1646365494807</updated>
+      <workItem from="1646365496497" duration="17934000" />
+      <workItem from="1646387208652" duration="3481000" />
+      <workItem from="1646617048414" duration="25081000" />
+      <workItem from="1646702693701" duration="4200000" />
+      <workItem from="1646721812930" duration="1352000" />
+      <workItem from="1646727932654" duration="6634000" />
+      <workItem from="1646789133769" duration="19401000" />
+      <workItem from="1646876659414" duration="477000" />
+      <workItem from="1646892341389" duration="5951000" />
+      <workItem from="1646904673412" duration="464000" />
+      <workItem from="1646905225022" duration="13123000" />
+      <workItem from="1646970107979" duration="1841000" />
+      <workItem from="1647055624370" duration="795000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
