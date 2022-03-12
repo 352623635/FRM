@@ -5,6 +5,7 @@
     import { onMounted, onUnmounted } from "vue";
     import dynamicLoadScript from "@/assets/loadScript.js"
     import request from "../../utils/request";
+    import store from "../../store";
     export default {
         props: {
             value: {
@@ -20,7 +21,7 @@
           }
         },
         setup(props, { emit }) {
-            const server='http://127.0.0.1:3001';
+            const server=store.state.host+':3001';
             //当前服务器地址
             const id = "tinymce-" + new Date().getTime();
             const init = () => {

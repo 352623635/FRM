@@ -1,6 +1,7 @@
 import axios from "axios";
+import store from "@/store";
 let request= axios.create({
-    baseURL:"http://127.0.0.1:3001",
+    baseURL:store.state.host+":3001",
     timeout:6000
 });
 

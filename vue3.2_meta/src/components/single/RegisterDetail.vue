@@ -73,7 +73,7 @@
     import type { ElForm } from 'element-plus';
     import request from "../../utils/request";
     // import sha1 from 'js-sha1';
-    const server ='http://127.0.0.1:3001'
+    const host = store.state.host;
     let input=ref();
     let msg = ref();
     // const test = '123123124';

@@ -1,4 +1,4 @@
-<template style="width: 100%;background-color: white">
+<template style="width: 100%;background-color: white;min-width:750px">
     <TabBar :logo=logo :path=tabbar />
 
     <suspense>

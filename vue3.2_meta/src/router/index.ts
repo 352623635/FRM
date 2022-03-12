@@ -18,6 +18,10 @@ const routes: RouteRecordRaw[] = [
         component:()=>import('@/components/views/Test1.vue')
     },
     {
+        path: '/test2',
+        component:()=>import('@/components/views/Test2.vue')
+    },
+    {
         path: '/login',
         component:()=>import('@/components/views/Login.vue')
     },
@@ -33,7 +37,11 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/user_self',
         component:()=>import('@/components/views/Userself.vue')
-    }
+    },
+    {
+        path: '/upload_self',
+        component:()=>import('@/components/views/Uploadself.vue')
+    },
 ]
 // 路由模式：这里使用的是 hash 模式
 const history: RouterHistory = createWebHashHistory('/')

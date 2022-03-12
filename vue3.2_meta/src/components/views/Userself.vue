@@ -1,13 +1,11 @@
-<template xmlns="">
-    <div :style="{backgroundSize: 'cover',width: '100%',backgroundImage:'url('+url+')'}" >
-        <div class="Login">
-            <TabBar :logo=logo :path=tabbar></TabBar>
-            <suspense>
-                <User_self></User_self>
-            </suspense>
-        </div>
-        <Footer :footer="footer"></Footer>
-    </div>
+<template>
+  <div :style="'background-image: url('+host+':3001/background.jpg'+');min-width:750px'">
+    <TabBar :logo=logo :path=tabbar />
+    <suspense>
+      <UserSelf></UserSelf>
+    </suspense>
+    <Footer :footer="footer" />
+  </div>
 
 </template>
 
@@ -16,9 +14,7 @@
     import Footer from '@/components/single/Footer.vue';
     import TabBar from '@/components/single/TabBar.vue';
     import store from '@/store'
-    import User_self from "../single/UserSelf.vue";
-
-    const url='/src/assets/background.jpg';
+    const host =store.state.host;
 
     const tabbar = store.state.tabbar;
     const footer = store.state.footer;
@@ -28,11 +24,5 @@
 </script>
 
 <style lang="scss">
-    .Login{
-        max-width: 1000px;
-        margin: auto;
-        min-width: 800px;
-        height: 100%;
-    }
     @import "src/assets/global.scss";
 </style>

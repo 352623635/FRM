@@ -56,11 +56,14 @@
           </div>
           <div v-else class="to-logout">
             <div >
-              <el-image :src="'http://localhost:3001'+session.avatar" alt=""/><br>
+              <router-link to="/user_self">
+                <el-image :src="host+':3001'+session.avatar" alt=""/>
+              </router-link>
+              <br>
               <a @click="logout"><button>注销</button></a>
             </div>
             <div class="logout-a">
-              <a>{{session.name}}</a>
+              <a style="font-size: 12px;color: #1a1a1a">{{session.name}}</a>
             </div>
           </div>
         </div>
@@ -82,6 +85,8 @@ import store from "@/store";
 import {defineProps} from "@vue/runtime-core";
 import {ref, computed, reactive,onMounted} from 'vue';
 import router from "@/router";
+const host = store.state.host;
+
 
 let href = ref();
 href.value = router.currentRoute._rawValue.href;

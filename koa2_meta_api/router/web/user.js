@@ -84,4 +84,18 @@ router.post('/user_update',async ctx=>{
     //在前端要求所有字段
 });
 //个人主要信息更新，同时也会更新token值，会返回前端session中要求的所有数据
+router.get('/user_all_text',async ctx =>{
+    const id = ctx.query.id;
+    let Text={
+        essay:[],
+        pour:[]
+    }
+    const sql = `SELECT essay_id,img,title,type,preface,hot FROM ms_essay WHERE uid=${id}`;
+    const sql1 = `SELECT * FROM ms_pour WHERE uid=${id}`;
+    Text.essay = await queryResult(sql);
+    Text.pour =await queryResult(sql1);
+    ctx.body=Text;
+})
+
+
 module.exports = router;

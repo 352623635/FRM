@@ -12,6 +12,7 @@ const VueHttp = axios.create({
 
 export default createStore({
     state:{
+        host:'http://127.0.0.1',
         count:0,
         n:4,
         session:window.sessionStorage,

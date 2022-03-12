@@ -4,7 +4,7 @@
             :auto-upload="false"
             :limit="1"
             :on-exceed="handleExceed"
-            action="http://127.0.0.1:3001/web/essay_img_upload"
+            :action="host+':3001/web/essay_img_upload'"
             class="upload-demo"
             name="essay"
     >
@@ -23,6 +23,8 @@
 </template>
 
 <script setup>
+import store from "../../store";
+const host = store.state.host;
     import { ref } from 'vue'
     const upload = ref()
 

@@ -1,5 +1,5 @@
 <template>
-    <div :style="{backgroundSize: 'cover',width: '100%',backgroundImage:'url('+url+')'}" >
+    <div :style="'background-image: url('+host+':3001/background_login.jpg'+');min-width:750px'" >
         <div class="Login">
             <TabBar :logo=logo :path=tabbar></TabBar>
             <LoRe></LoRe>
@@ -14,7 +14,7 @@
     import Footer from '@/components/single/Footer.vue';
     import TabBar from '@/components/single/TabBar.vue';
     import store from '@/store'
-    const url='/src/assets/background.jpg';
+    const host=store.state.host;
 
     const tabbar = store.state.tabbar;
     const footer = store.state.footer;

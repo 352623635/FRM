@@ -1,5 +1,5 @@
 <template>
-    <div :style="{backgroundSize: 'cover',width: '100%',backgroundImage:'url('+url+')'}" >
+    <div :style="'background-image: url('+host+':3001/background_login.jpg'+');min-width:750px'" >
         <div class="Login">
             <TabBar :logo=logo :path=tabbar></TabBar>
             <Register></Register>

@@ -376,5 +376,24 @@ images_upload_handler: function (blobInfo, success, failure) {
 git init    或者  git clone [url]
 //初始化本地
 
+ssh-keygen -t rsa -C "youremail@example.com"
+//远程连接，发送密钥然后在github的setting中，找到ssh新建连接，将_rsa.pub复制进去
 
+git remote add origin git@github.com:tianqixin/runoob-git-test.git
+//连接远程仓库
+
+git branch
+//列出分支，后接名字可以创建分支
+
+git checkout test
+//切换分支
+
+git merge test
+//分支合并
+
+git add .
+git commit -m ""
+got push
 ```
+
+#####服务器运行的koa2接口框架处于冷处理而不是热更新

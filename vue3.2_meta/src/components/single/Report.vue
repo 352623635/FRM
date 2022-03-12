@@ -70,12 +70,11 @@
 </template>
 
 <script setup>
-    import data from '@/store';
+    import store from '@/store';
     import * as echarts from 'echarts';
     import {ref, onMounted, computed} from "vue";
     import request from "../../utils/request";
     let date = new Date(Date.now());
-    const store=data;
     onMounted(()=>{
         console.log(document.getElementById('chart'));
         draw(date.getFullYear(),date.getMonth()+1,date.getDate());

@@ -1,5 +1,5 @@
 <template >
-    <div :style="'background-image: url('+'http://127.0.0.1:3001/background.jpg'+')'">
+    <div :style="'background-image: url('+host+':3001/background.jpg'+');min-width:750px'">
         <TabBar :logo=logo :path=tabbar />
         <Banner :banner=banner time=4 />
         <div style="padding-top: 10px">
@@ -12,7 +12,7 @@
                 <div v-else style="width: 100%;">
                     <router-link to="/add_mood">
                         <div style="max-width: 1000px;min-width: 750px;margin: auto">
-                            <el-image :src="'http://localhost:3001/none_mood.png'+''" style="width: 100%;height: 100%"></el-image>
+                            <el-image :src="host+':3001/none_mood.png'" style="width: 100%;height: 100%"></el-image>
                         </div>
                     </router-link>
                 </div>
@@ -20,7 +20,7 @@
             <div v-else style="width: 100%;">
                 <router-link to="/login">
                     <div style="max-width: 1000px;min-width: 750px;margin: auto">
-                        <el-image :src="'http://localhost:3001/not_login_mood.png'+''" style="width: 100%;height: 100%"></el-image>
+                        <el-image :src="host+':3001/not_login_mood.png'" style="width: 100%;height: 100%"></el-image>
                     </div>
                 </router-link>
             </div>
@@ -32,7 +32,10 @@
             <Pour />
         </suspense>
 
-        <Essay  />
+        <suspense>
+          <Essay  />
+        </suspense>
+
         <Games />
         <Footer :footer="footer" />
     </div>
@@ -50,6 +53,7 @@
     import Games from "../single/Games.vue";
     import Test from "./Test.vue"
     import request from "../../utils/request";
+    const host = store.state.host;
     let session=computed(()=>{
         return store.state.session
     });
