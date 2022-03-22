@@ -1,17 +1,15 @@
 <template>
-  <div style="max-width:1000px;;min-width:750px;background-color: #f0f0f0;margin: auto">
+  <div style="background-color: #f0f0f0;margin: auto">
     <div class="common-layout">
       <el-container>
         <el-header height="275px">
           <div class="data">
             <div class="data_head">
-              <el-image :src="host+':3001'+session.avatar" alt="" style="margin:10px 0;min-width: 225px;height: 225px"/>
+              <el-image fit="cover" :src="host+''+session.avatar" alt="" style="margin:10px 0;width: 225px;height: 225px"/>
               <div style="margin: auto 0;">
                 <el-descriptions :column="3" border class="margin-top" title="个人信息">
                   <template #extra>
-                    <router-link to="/upload_self">
-                      <el-button type="primary">🔧修改</el-button>
-                    </router-link>
+                    <el-button type="primary" @click="write">🔧编辑</el-button>
                   </template>
                   <el-descriptions-item>
                     <template #label>
@@ -80,9 +78,9 @@
             </div>
           </div>
         </el-header>
-        <div style="background-color: white">
+        <p style="background-color: #e6a23c2e;padding: 5px 0 5px 2rem;margin:0;font-size: 18px">
           我的创作
-        </div>
+        </p>
         <el-container>
 
           <el-container>
@@ -92,12 +90,16 @@
                   <li v-for="(detail,detail_) in essay.essay" :key="detail_" class="infinite-list-item">
                     <div  class="essay-box">
                       <div class="essay-draw">
-                        <img :src=detail.img alt="暂无图片">
+                        <img v-if="detail.type==='情绪'" :src="host+'/essay/essay_mood_img.jpg'" alt="暂无图片">
+                        <img v-else-if="detail.type==='关于自我'" :src="host+'/essay/essay_self_img.jpg'" alt="暂无图片">
+                        <img v-else-if="detail.type==='科普'" :src="host+'/essay/essay_since_img.jpg'" alt="暂无图片">
+                        <img v-else-if="detail.type==='教育'" :src="host+'/essay/essay_teach_img.jpg'" alt="暂无图片">
+                        <img v-else :src="host+'/essay/essay_none_img.jpg'" alt="暂无图片">
                         <!--                图片-->
                       </div>
 
                       <div class="essay-liter" >
-                        <router-link :to="'/essay_body?id='+detail.essay_id" >
+                        <router-link :to="'/essay_body?id='+Base64.encode(detail.essay_id)" >
                           <!--                链接-->
                           <p>{{detail.title}}</p>
                           <!--                题目-->
@@ -108,7 +110,6 @@
                     </div>
                   </li>
                 </ul>
-
               </div>
               <div v-else> 还没有文章哦</div>
             </el-main>
@@ -116,12 +117,12 @@
 
             <el-footer>Footer</el-footer>
           </el-container>
-          <el-aside width="325px">
+          <el-aside width="325px" style="border-style: groove;border-radius: 5px">
             <div v-if="essay.pour" class="ques-text">
               <ul class="infinite-list" style="overflow: auto">
-                <li v-for="(ques,index) in essay.pour" :key="index.question" class="infinite-list-item">
+                <li v-for="(ques,index) in essay.pour" :key="index.question">
                   <div class="ques-text-txt">
-                    <div><p style="margin: auto 15px;padding-top: 5px">{{ques.title}}</p></div>
+                    <div><p style="margin: 0;padding-top: 5px">{{ques.title}}</p></div>
                     <div style="font-size:12px;display:flex;height: 50px;margin: auto 5px">
                       <div style="width: 90%;">
                         <suspense>
@@ -157,14 +158,19 @@
     import store from "@/store";
     import Criterion from "./Criterion.vue"
     const {host,session} = store.state ;
+    import {Base64} from "js-base64";
 
     // const load = () => {
     //   count.value += 2
     // }
-
+    const emit = defineEmits(['update'])
+    const write = ()=>{
+      emit('update','write')
+    }
     const data = (await request.get('/web/user/user_self')).data;
-    console.log(sessionStorage.id)
+
     const essay = (await request.get('/web/user/user_all_text',{params: {id:sessionStorage.id}})).data;
+    console.log(essay)
 </script>
 
 <style lang="scss" scoped>
@@ -198,8 +204,9 @@
   }
 
   .essay{
+
      display: flex;
-     margin:10px auto auto 2px;
+     margin:10px 0;
      width: 100%;
      flex-wrap: wrap;
      justify-content: space-evenly;
@@ -232,7 +239,7 @@
       color: #2b3b4e;
       font-size: 16px;
       font-weight: 500;
-      margin: 0 0 0 0;
+      margin: 0;
       width: 100%;
       display: -webkit-box;
       -webkit-box-orient: vertical;

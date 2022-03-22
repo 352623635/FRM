@@ -1,7 +1,8 @@
 <template>
-    <div style="width: 100%;padding-top: 10px">
+    <div style="width: 100%;padding-top: 20px">
         <div class="games-border">
             <el-menu
+                style="border-radius: 5px 5px 0 0 ;"
                     :default-active="activeIndex2"
                     active-text-color="black"
                     background-color="#17a4a942"
@@ -43,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="max-width: 1000px;margin: 10px auto auto auto;padding-top:10px;min-width: 750px;text-align: center">
+                <div style="margin: 10px auto auto auto;padding-top:10px;width:100%;text-align: center">
                     <button @click="l_change(l=1)">第一页</button>
                     <a>共{{n+((m!==0)-0)}}页&nbsp;</a>
                     <a>当前第<label>
@@ -124,9 +125,9 @@ import {ref} from "vue";
 
 <style lang="scss">
     .games-border{
-        background-color: white;
-        min-width: 750px;
-        max-width: 1000px;
+      border-radius: 5px ;
+        background-color: #ffffff6e;
+        width: 100%;
         margin: auto;
         padding-bottom: 20px;
         .games-box{
@@ -134,17 +135,16 @@ import {ref} from "vue";
         }
         .games{
             width: 100%;
-            max-width: 1000px;
+
             margin: 50px auto auto 2px;
             height: 250px;
             display: flex;
             text-align: center;
             justify-content: space-around;
             align-content: center;
-            min-width: 750px;
+
             .game_box{
-                max-width: 900px;
-                width: 90%;
+                width: 91%;
                 height: 100%;
                 display: flex;
                 justify-content: space-around;

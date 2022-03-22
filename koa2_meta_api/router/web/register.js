@@ -3,22 +3,30 @@ const router = new Router();
 const {returnMsg,query,queryResult} =require('../../utils');
 
 router.post('/', async  ctx => {
-    let {name,pwd,gender,user,avatar}=ctx.request.body;
+
+
+    let {name,code,pwd,gender,user,avatar}=ctx.request.body;
     const mark = null;
     const ph =/^[1][3,4,5,6,7,8][0-9]{9}$/;
     const em = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-    if (avatar==''){
-        avatar='/default.png'
-    }
 
 
     // ctx.body={phone,email}
     const sql = `SELECT * FROM ms_user where email='${user}' or phone='${user}' or name='${name}'`;
     let sql1=``;
     if(ph.test(user)){
-        sql1=`INSERT INTO ms_user (name,pwd,gender,phone,avatar,mark) VALUES ('${name}','${pwd}','${gender}','${user}','${avatar}',${mark})`
+        sql1=`INSERT INTO ms_user (name,pwd,gender,phone,avatar,mark) VALUES ('${name}','${pwd}','${gender}','${user}','${avatar}',${mark})`;
+
     }else if(em.test(user)){
-        sql1=`INSERT INTO ms_user (name,pwd,gender,email,avatar,mark) VALUES ('${name}','${pwd}','${gender}','${user}','${avatar}',${mark})`
+        sql1=`INSERT INTO ms_user (name,pwd,gender,email,avatar,mark) VALUES ('${name}','${pwd}','${gender}','${user}','${avatar}',${mark})`;
+        console.log(ctx.session.code);
+        if (Date.now()-ctx.session.code[0]>300000){
+            ctx.body=returnMsg(400,'验证码已过期，请重新发送！');
+            return;
+        }else if (code.toString()!==ctx.session.code[1]){
+            ctx.body = returnMsg(400,'验证码错误，请重新输入！');
+            return;
+        }
     }
     if(ph.test(user)||em.test(user)){
 
@@ -36,5 +44,8 @@ router.post('/', async  ctx => {
     }
 });
 
+router.post('/test',async ctx=>{
+    ctx.body=ctx.session.code;
+})
 
 module.exports = router;

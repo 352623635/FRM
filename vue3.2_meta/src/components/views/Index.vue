@@ -1,35 +1,17 @@
-<template >
-    <div :style="'background-image: url('+host+':3001/background.jpg'+');min-width:750px'">
+<template>
+  <div :style="'background-image: url('+host+':3001/background.jpg'+');background-size: cover'">
+    <div style="max-width: 1100px;background-color: #97d5d9b5;min-width: 825px;margin: auto">
+      <div style="width:91%;margin:auto">
         <TabBar :logo=logo :path=tabbar />
         <Banner :banner=banner time=4 />
-        <div style="padding-top: 10px">
-            <div v-if="session.id">
-                <div v-if="session.mood==='true'">
-                    <suspense>
-                        <Report />
-                    </suspense>
-                </div>
-                <div v-else style="width: 100%;">
-                    <router-link to="/add_mood">
-                        <div style="max-width: 1000px;min-width: 750px;margin: auto">
-                            <el-image :src="host+':3001/none_mood.png'" style="width: 100%;height: 100%"></el-image>
-                        </div>
-                    </router-link>
-                </div>
-            </div>
-            <div v-else style="width: 100%;">
-                <router-link to="/login">
-                    <div style="max-width: 1000px;min-width: 750px;margin: auto">
-                        <el-image :src="host+':3001/not_login_mood.png'" style="width: 100%;height: 100%"></el-image>
-                    </div>
-                </router-link>
-            </div>
+        <div style="padding-top: 20px">
+              <suspense>
+                <Report />
+              </suspense>
         </div>
-
-
         <!--    异步组件需要使用此标签进行包裹才可以输出-->
         <suspense>
-            <Pour />
+          <Pour />
         </suspense>
 
         <suspense>
@@ -38,7 +20,11 @@
 
         <Games />
         <Footer :footer="footer" />
+      </div>
     </div>
+  </div>
+
+
 </template>
 
 <script setup>
@@ -51,7 +37,6 @@
     import Report from "../single/Report.vue";
     import Pour from "../single/Pour.vue";
     import Games from "../single/Games.vue";
-    import Test from "./Test.vue"
     import request from "../../utils/request";
     const host = store.state.host;
     let session=computed(()=>{

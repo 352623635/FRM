@@ -1,16 +1,19 @@
 <template>
-    <div :style="'background-image: url('+host+':3001/background_login.jpg'+');min-width:750px'" >
-        <div class="Login">
-            <TabBar :logo=logo :path=tabbar></TabBar>
-            <LoRe></LoRe>
-        </div>
-        <Footer :footer="footer"></Footer>
+  <div :style="'background-image: url('+host+':3001/background_login.jpg'+')'">
+    <div style="max-width: 1100px;background-color: #97d5d9b5;min-width: 825px;margin: auto">
+      <div class="Login">
+        <TabBar :logo=logo :path=tabbar></TabBar>
+        <Log></Log>
+      </div>
+      <Footer :footer="footer"></Footer>
+
     </div>
+  </div>
 
 </template>
 
 <script lang="ts" setup>
-    import LoRe from '@/components/single/LoginDetail.vue';
+    import Log from '@/components/single/LoginDetail.vue';
     import Footer from '@/components/single/Footer.vue';
     import TabBar from '@/components/single/TabBar.vue';
     import store from '@/store'
@@ -25,9 +28,9 @@
 
 <style lang="scss">
     .Login{
-        max-width: 1000px;
+
         margin: auto;
-        min-width: 750px;
+        width: 91%;
         height: 100%;
     }
     @import "src/assets/global.scss";

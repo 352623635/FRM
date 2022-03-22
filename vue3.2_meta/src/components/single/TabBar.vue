@@ -1,9 +1,7 @@
 <template>
   <!--  TabBar，
-     特性：1-随数据量变化，链接区域自动居中；-->
+          1-随数据量变化，链接区域自动居中；-->
   <!--    2-随数据量传入类型不同，在正常显示与折叠窗口间转化；-->
-  <!--    3-href强于to的地方在于，链接决绝对性；-->
-  <!--    4-拟加入子页面自动设置选中；-->
   <div class="line">
     <div>
       <div class="link">
@@ -57,7 +55,7 @@
           <div v-else class="to-logout">
             <div >
               <router-link to="/user_self">
-                <el-image :src="host+':3001'+session.avatar" alt=""/>
+                <el-image fit="cover" :src="host+session.avatar" alt=""/>
               </router-link>
               <br>
               <a @click="logout"><button>注销</button></a>
@@ -117,9 +115,7 @@ let logout=()=>{
 .line{
   width: 100%;
   .link{
-    background-color: #17a4a942;
-    max-width: 1000px;
-    min-width: 750px;
+    width: 100%;
     margin: auto;
     display: flex;
     align-items: center;
@@ -133,7 +129,7 @@ let logout=()=>{
         button{
           font-size: 10px;
           color: white;
-          background-color: cornflowerblue;
+          background-color: rgb(0 65 255 / 26%);
           box-shadow: 3px 3px 3px #888888;
           border-radius: 5px;
         }
@@ -169,12 +165,12 @@ let logout=()=>{
     }
   }
   .tab-search{
-    background-color: rgba(0,65,255,0.44);
+    border-radius: 5px;
+    background-color: #0041ff24;
     padding: 10px 0;
     margin: 10px auto 0 auto ;
     display: flex;
-    max-width: 1000px;
-    min-width: 750px;
+    width: 100%;
     height: 30px;
     align-items: center;
     justify-content: space-evenly;

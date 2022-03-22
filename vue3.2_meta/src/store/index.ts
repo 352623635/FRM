@@ -1,10 +1,7 @@
 import { InjectionKey } from 'vue'
 import { createStore, useStore as baseUseStore, Store} from 'vuex'
-import axios from "axios";
-const VueHttp = axios.create({
-    baseURL:'/api/',
-    timeout:6000
-})
+
+import request from "@/utils/request";
 //vue3安装axios方式为npm add axios而不是vue2的方式
 
 
@@ -12,7 +9,7 @@ const VueHttp = axios.create({
 
 export default createStore({
     state:{
-        host:'http://127.0.0.1',
+        host:'http://127.0.0.1:3001',
         count:0,
         n:4,
         session:window.sessionStorage,
@@ -139,6 +136,11 @@ export default createStore({
         ],
         game_data:[
             {
+                "name":"迷宫",
+                "img":"http://127.0.0.1:3001/maze.png",
+                "url":"https://www.17sucai.com/pins/demo-show?id=7202&st=rLC5H3vwTdnTkGEpLVu38g&e=1647561719"
+            },
+            {
                 "name":"砸地鼠",
                 "img":"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fis3.mzstatic.com%2Fimage%2Fthumb%2FPurple49%2Fv4%2F56%2F01%2Fef%2F5601ef11-d7db-64ee-365e-dd0247bee915%2Fsource%2F512x512bb.jpg&refer=http%3A%2F%2Fis3.mzstatic.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1644385010&t=93ff32283bce3f38a8476aec90541ff3",
                 "url":""
@@ -158,11 +160,7 @@ export default createStore({
                 "img":"",
                 "url":""
             },
-            {
-                "name":"未知",
-                "img":"",
-                "url":""
-            },
+
             {
                 "name":"未知",
                 "img":"",
@@ -197,7 +195,7 @@ export default createStore({
                 state.session.setItem('id',data.data.data.id);
 
                 state.session.setItem('token',data.data.data.ms_token);
-                const date =(await axios.post('/api/web/user/mood',{"user":sessionStorage.id})).data.date;
+                const date =(await request.post('/web/user/mood',{"user":sessionStorage.id})).data.date;
                 if(date==''){
                     state.session.setItem('mood','false');
                 }else {
@@ -229,16 +227,16 @@ export default createStore({
         },
     },
     actions:{
-        postRegister({commit},{name,pwd,gender,user,avatar}){
-            axios.post('/api/web/register',
-                {name:name,pwd:pwd,gender:gender,user:user,avatar:avatar}).then(
+        postRegister({commit},{name,pwd,code,gender,user,avatar}){
+            request.post('/web/register',
+                {name:name,pwd:pwd,code:code,gender:gender,user:user,avatar:avatar}).then(
                 res=>commit('Register',res)).catch(function (error) {
                     console.log(error)
                 }
             )
         },
         postLogin({commit},{user,pwd}){
-            axios.post('/api/web/login',
+            request.post('/web/login',
                 {user:user,pwd:pwd}).then(
                 res=>commit('Login',res)).catch(function (error) {
                     console.log(error)
@@ -246,13 +244,13 @@ export default createStore({
             )
         },
         getEssay({commit}){
-            axios.get('/api/web/essay/essay_index').then(
+            request.get('/web/essay/essay_index').then(
                 res=>commit('Essay',res)).catch(err=>console.log(err)
             );
         },
         postMood({commit},{user}){
-            axios.post(
-                '/api/web/user/mood',{user:user}
+            request.post(
+                '/web/user/mood',{user:user}
             ).then(res=>commit('Mood',res)).catch(err=>console.log(err));
         }
     },

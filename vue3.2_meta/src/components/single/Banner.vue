@@ -5,7 +5,7 @@
                 <el-image
                         :src="item.path"
                         fit="scale-down"
-                        style="max-width: 1000px; min-width: 750px"
+                        style="width: 100%"
                 ></el-image>
             </el-carousel-item>
         </el-carousel>
@@ -41,12 +41,13 @@ const props=defineProps({
         background-color: #4e2b2b00;
     }
     .line_{
-        padding-top: 10px;
-        max-width: 1000px;
+
+        padding-top: 20px;
+        width: 100%;
         margin: auto;
         height: auto;
         text-align: center;
-        min-width: 750px;
+
         min-height: 400px;
     }
     .draw{

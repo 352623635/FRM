@@ -9,16 +9,16 @@
                     <input v-model="user" class="l-txt" placeholder="请输入账号">
                 </label>
                 <label>
-                    <input v-model="pwd" class="l-txt" placeholder="请输入密码" type="password">
+                    <input v-model="pwd" class="l-txt" placeholder="请输入密码" @keyup.enter.native="login" type="password">
                 </label>
             </div>
             <div class="cap none">
                 <label>
-                    <input class="code" placeholder="请输入验证码" type="text">
+                    <input class="code" placeholder="请输入验证码"  @keyup.enter.native="login" type="text">
                 </label>
 
                 <div class="cap-draw">
-                    <canvas id="draw" height="100px" width="100px"></canvas>
+                    <canvas id="draw" height="50" width="50" @click="cap()"></canvas>
                 </div>
             </div>
             <div class="login-button">
@@ -72,26 +72,26 @@
             }
             const draw = document.getElementById("draw");
             const context = draw.getContext("2d");
-            draw.width = 100;
-            context.font="italic 35px Arial";
+            draw.width = 50;
+            context.font="italic 18px Arial";
             context.textAlign= "center";
             context.textBaseline= "middle";
             context.beginPath();
-            context.fillText(code.value,50,50);
-            const x = parseInt(Math.random()*100);
-            const y = parseInt(Math.random()*100);
-            const x1 = parseInt(Math.random()*100);
-            const y1 = parseInt(Math.random()*100);
-            const x2 = parseInt(Math.random()*100);
-            const y2 = parseInt(Math.random()*100);
-            const x3 = parseInt(Math.random()*100);
-            const y3 = parseInt(Math.random()*100);
-            context.lineWidth= 3;
+            context.fillText(code.value,25,25);
+            const x = parseInt(Math.random()*50);
+            const y = parseInt(Math.random()*50);
+            const x1 = parseInt(Math.random()*50);
+            const y1 = parseInt(Math.random()*50);
+            const x2 = parseInt(Math.random()*50);
+            const y2 = parseInt(Math.random()*50);
+            const x3 = parseInt(Math.random()*50);
+            const y3 = parseInt(Math.random()*50);
+            context.lineWidth= 2;
             context.strokeStyle = "green";
             context.moveTo(x,y);
             context.lineTo(x1,y1);
             context.stroke();
-            context.lineWidth= 8;
+            context.lineWidth= 4;
             context.strokeStyle = "green";
             context.moveTo(x2,y2);
             context.lineTo(x3,y3);
@@ -100,10 +100,12 @@
     const login=()=>{
         let check_code = document.getElementsByClassName("code");
         let none = document.getElementsByClassName("none");
-
+        if(chance.value===0||chance.value===-1){
+          none[0].style.display ='block';
+        }
         // let n = "0000"+Math.round(Math.random()*9999);
         // const random = n.substr(n.length-4,n.length);
-        if(chance.value > 0){
+        if(chance.value > -1){
             chance.value--;
             console.log(chance.value);
             store.dispatch("postLogin",
@@ -112,14 +114,13 @@
                     pwd:pwd.value});
             console.log(user.value,pwd.value)
         }else {
-            none[0].style.display ='block';
             if (check_code[0].value !== undefined){
-                if (check_code[0].value == code){
+                if (check_code[0].value.toLowerCase() === code.value.toLowerCase()){
                     store.dispatch("postLogin",
                         {
                             user:user.value,
                             pwd:pwd.value});
-                    cap();
+                  cap();
                 }else {
                     cap();
                     alert("验证码错误")
@@ -133,10 +134,9 @@
 
 <style lang="scss" scoped>
     .login {
-        background-color: #9ffaf242;
         text-align: center;
         width: 100%;
-        height: 400px;
+        height: 450px;
         padding-top: 20px;
         .login-img{
             width: 100px;
@@ -170,7 +170,7 @@
                     height: 50px;
                     canvas{
                         background-color: gray;
-                        margin: -55px -65px auto auto;
+                        margin: -5px -15px auto auto;
                     }
                 }
                 

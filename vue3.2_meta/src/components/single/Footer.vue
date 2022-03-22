@@ -54,11 +54,12 @@
 
 <style lang="scss">
     .footer{
+      border-radius: 5px 5px 0 0 ;
         background-color: rgba(124,156,151,0.5);
         padding-top: 20px;
-        min-width: 750px;
+        width: 100%;
         text-align: center;
-        max-width: 1000px;
+
         margin: auto;
         a{
             color: rgba(0,71,255,0.46);

@@ -1,7 +1,7 @@
 import axios from "axios";
-import store from "@/store";
+
 let request= axios.create({
-    baseURL:store.state.host+":3001",
+    baseURL:'/api',
     timeout:6000
 });
 

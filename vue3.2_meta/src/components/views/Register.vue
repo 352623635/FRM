@@ -1,11 +1,13 @@
 <template>
-    <div :style="'background-image: url('+host+':3001/background_login.jpg'+');min-width:750px'" >
+  <div :style="'background-image: url('+host+':3001/background_login.jpg'+')'">
+    <div style="max-width: 1100px;background-color: #97d5d9b5;min-width: 825px;margin: auto">
         <div class="Login">
             <TabBar :logo=logo :path=tabbar></TabBar>
             <Register></Register>
         </div>
         <Footer :footer="footer"></Footer>
     </div>
+  </div>
 
 </template>
 
@@ -14,20 +16,19 @@
     import Footer from '@/components/single/Footer.vue';
     import TabBar from '@/components/single/TabBar.vue';
     import store from '@/store'
-    const url='/src/assets/background.jpg';
+    const host = store.state.host;
 
     const tabbar = store.state.tabbar;
     const footer = store.state.footer;
-    const logo = store.state.footer;
+    const logo = store.state.logo;
 
 
 </script>
 
 <style lang="scss">
     .Login{
-        max-width: 1000px;
+      width: 91%;
         margin: auto;
-        min-width: 800px;
         height: 100%;
     }
     @import "src/assets/global.scss";

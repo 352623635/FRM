@@ -1,7 +1,7 @@
 <template>
     <div class="register">
         <div class="register_box">
-            <div style="margin: 10px auto">
+            <div style="margin:  auto;">
                 <el-form
                         ref="ruleFormRef"
                         :model="ruleForm"
@@ -10,13 +10,20 @@
                         class="demo-ruleForm"
                         label-width="80px"
                         size="small"
-                        style="width: 400px"
+                        style="width: 400px;margin: 10px auto"
                 >
+                    <el-form-item label="昵称" prop="name">
+                      <el-input v-model="ruleForm.name" placeholder="为自己取一个新名字"></el-input>
+                    </el-form-item>
                     <el-form-item label="账号" prop="user">
                         <el-input v-model="ruleForm.user" placeholder="请输入11位手机号或者邮箱"></el-input>
+                      <el-button :disabled="isSend" style="width: 80px" @click="code_send">
+                        {{ruleForm.send}}
+                      </el-button>
                     </el-form-item>
-                    <el-form-item label="昵称" prop="name">
-                        <el-input v-model="ruleForm.name" placeholder="为自己取一个新名字"></el-input>
+
+                    <el-form-item label="验证码">
+                      <el-input v-model="ruleForm.code" placeholder="请输入账号后点击获取验证码"></el-input>
                     </el-form-item>
                     <el-form-item label="密码" prop="pwd">
                         <el-input
@@ -42,7 +49,7 @@
                     <el-form-item lable="头像" prop="avatar">
                         <label style="height: 100px">
                             <input id="input" accept="image/png, image/bmp, image/jpg, image/jpeg" style="display: none" type='file' @change="handleInput">
-                            <el-image v-model:src="ruleForm.avatar" fit="cover" style="width: 100px;height: 100px"></el-image>
+                            <el-image v-model:src="ruleForm.avatar" fit="cover" style="width: 100px;height: 100px;background-color: rgb(214 214 214 / 52%)"></el-image>
 
                         </label>
                         <span id="msg" style="font-size: 15px;margin:auto auto 0 0;display: none;color: yellow">头像上传成功！</span>
@@ -72,6 +79,7 @@
     import { reactive, ref ,onMounted} from 'vue';
     import type { ElForm } from 'element-plus';
     import request from "../../utils/request";
+    import axios from "axios";
     // import sha1 from 'js-sha1';
     const host = store.state.host;
     let input=ref();
@@ -92,8 +100,10 @@
         pwd:'',
         checkpwd: '',
         gender: '未知',
-        avatar:'',
-        avatar_img:''
+        avatar:'src/assets/add_img.png',
+        avatar_img:'',
+        code:'',
+        send:'发送验证码'
     })
     onMounted(()=>{
         input.value = document.getElementById('input');
@@ -124,9 +134,11 @@
         }
     }
 
+    const ph =/^[1][3,4,5,6,7,8][0-9]{9}$/;
+    const em = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+
     const check=(rule:any,value:any,callback:any)=>{
-        const ph =/^[1][3,4,5,6,7,8][0-9]{9}$/;
-        const em = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+
         if (!ph.test(value)&&!em.test(value)){
             callback(new Error('格式错误,请检查！'))
         }else {
@@ -135,7 +147,7 @@
     }//格式矫正
 
     const checkavatar=(rule:any,value:any,callback:any)=>{
-        if (value === '') {
+        if (value === 'src/assets/add_img.png') {
             callback(new Error('请传入头像，且最大不超过1M！'))
         }else {
             callback()
@@ -179,12 +191,45 @@
             //     message:'请上传头像',
             //     tirgger:'blur'
             // },
-            // {
-            //     validator:checkavatar,
-            //     tirgger: 'blur'
-            // }
+            {
+                validator:checkavatar,
+                tirgger: 'blur'
+            }
         ]
     })
+
+    let set:any;
+    let isSend =ref(false);
+    const fun = ()=>{
+      ruleForm.send=(parseInt(ruleForm.send)-1).toString();
+      if (ruleForm.send==='0'){
+        ruleForm.send='发送验证码';
+        clearInterval(set);
+        isSend.value=false;
+      }
+    }
+    const code_send=async ()=>{
+
+        if(em.test(ruleForm.user)){
+
+          const send_code = (await request.post('/manage/code/email',{email:ruleForm.user})).data;
+          if (send_code.code===200){
+            alert('验证码发送成功，有效期5分钟，请注意查收！')
+          }else{
+            alert('验证码发送失败，请重新发送，若一直失败请联系管理员！')
+          }
+        }else if(ph.test(ruleForm.user)){
+          alert('暂时没有布置手机验证码接口，请忽略验证码直接注册！')
+        }
+        isSend.value=true;
+        ruleForm.send='60';
+        set=setInterval(fun,1000);
+
+
+    }
+
+
+
 
     const handleButton=()=>{
       if(!input.value.files[0]){
@@ -202,6 +247,7 @@
         request.post('/web/avatar_upload',formData).then((res:any)=>{
               ruleForm.avatar_img=res.data;
               msg.value.style.display='block';
+              console.log(ruleForm.avatar_img)
             }
           // 这里返回的是你图片的地址
           //sever 是你的服务器名前缀，如果接口返回的地址是自带前缀的要自行调整
@@ -222,22 +268,23 @@
     }
     const submitForm = (formEl: FormInstance | undefined) => {
         if (!formEl) return
-        formEl.validate((valid) => {
-            if (valid) {
-                console.log(ruleForm);
-                store.dispatch("postRegister",
-                    {
-                        name:ruleForm.name,
-                        user:ruleForm.user,
-                        pwd:ruleForm.pwd,
-                        gender:ruleForm.gender,
-                        avatar:ruleForm.avatar_img
-                    });
-            } else {
-                console.log('error submit!');
-
-                return false
-            }
+        formEl.validate(async (valid) => {
+          if (valid) {
+            console.log(ruleForm);
+            const result = (await store.dispatch("postRegister",
+                {
+                  name: ruleForm.name,
+                  user: ruleForm.user,
+                  code: ruleForm.code,
+                  pwd: ruleForm.pwd,
+                  gender: ruleForm.gender,
+                  avatar: ruleForm.avatar_img
+                }));
+            console.log(result)
+          } else {
+            console.log('error submit!');
+            return false
+          }
         })
     }
 
@@ -249,6 +296,10 @@
 </script>
 
 <style lang="scss" scoped>
+    ::v-deep .el-form-item__content{
+      flex-wrap: nowrap;
+    }
+
     ::v-deep .el-form-item--default{
         margin-bottom: 10px;
 
@@ -258,16 +309,17 @@
 
     }
     .register {
-
+        margin: auto;
         text-align: center;
         width: 100%;
-        height: 400px;
+        height: 450px;
+      padding-top: 20px;
 
     }
     .register_box{
         text-align: left;
         width: 400px;
-        margin: auto;
+        margin:  40px auto;
         border:3px solid cornflowerblue;
         box-shadow: 10px 10px 5px #888888;
         border-radius: 5px;

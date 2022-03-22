@@ -1,6 +1,6 @@
  <template>
     <div class="pour">
-        <div style="background-color: white">
+        <div style="background-color: #ffffff6e;border-radius: 5px ;">
             <el-menu
                     :default-active="activeIndex1"
                     active-text-color="black"
@@ -9,6 +9,7 @@
                     hover-text-color="#000a6fb8"
                     mode="horizontal"
                     text-color="#000a6fb8"
+                    style="border-radius: 5px 5px 0 0 ;"
             >
                 <el-menu-item index="new">倾述求助</el-menu-item>
                 <el-menu-item index="more">去求助&#10148;</el-menu-item>
@@ -91,13 +92,13 @@
     .pour{
 
         width: 100%;
-        max-width: 1000px;
+
         margin: auto;
-        padding-top: 10px;
-        min-width: 750px;
+        padding-top: 20px;
+
         .pour-box{
-            max-width: 1000px;
-            min-width: 750px;
+
+          border-radius: 5px;
             margin: auto;
             height: 510px;
             display: flex;

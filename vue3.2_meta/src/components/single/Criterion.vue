@@ -2,8 +2,8 @@
   <div v-if="type==='index'">
     <div v-if="criterion[0]" class="cri_box">
       <div v-if="type==='index'" class="head">
-        <div style="background-color: white;margin:auto;width:64px;display:flex;flex-direction: column;justify-content: center;align-items: center;">
-          <el-avatar :src="host+':3001'+user.avatar">
+        <div style="background-color: #ffffff6e;margin:auto;width:64px;display:flex;flex-direction: column;justify-content: center;align-items: center;">
+          <el-avatar :src="host+user.avatar">
 
           </el-avatar>
 
@@ -26,18 +26,12 @@
   </div>
   <div v-else-if="type==='user'">
     <div v-if="criterion[0]" class="cri_box1">
-      <div style=" display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #eeeeee;
-    border-radius: 5px;
-    height: 50px;
-    margin: auto 0;">
-        <span style="width: 220px">
+      <div style="border-style: ridge; display: flex;flex-direction: column;justify-content: space-between;background-color: #eeeeee;border-radius: 5px;height: 45px;margin: auto 0;">
+        <span style="width: 220px;color: #757d87">
                 <a class="liter_txt1">{{criterion[0].text}}</a>
         </span>
         <!--                文本内容-->
-        <a class="liter_time1">{{criterion[0].update_time.slice(0,10)}}</a>
+        <a style="color:#757d87;">{{criterion[0].update_time.slice(0,10)}}</a>
       </div>
     </div>
   </div>

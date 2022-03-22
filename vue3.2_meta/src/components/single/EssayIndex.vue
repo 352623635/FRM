@@ -1,36 +1,52 @@
 <template>
 
-    <div style="padding-top: 10px;">
+    <div style="padding-top: 20px;">
         <div class="all-essay">
-            <el-menu
-                    :default-active="activeIndex2"
-                    active-text-color="black"
-                    background-color="#17a4a942"
-                    class="el-menu-demo"
-                    hover-text-color="#000a6fb8"
-                    mode="horizontal"
-                    text-color="#000a6fb8"
-                    @select="handleSelect"
-            >
+          <div style="display: flex;border-radius: 5px 5px 0 0 ;justify-content: space-between;background-color: #17a4a942">
+            <div style="width: 90%;">
+              <el-menu
+                  :default-active="activeIndex2"
+                  active-text-color="black"
+                  background-color="#17a4a900"
+                  class="el-menu-demo"
+                  hover-text-color="#000a6fb8"
+                  mode="horizontal"
+                  text-color="#000a6fb8"
+                  @select="handleSelect"
+              >
                 <el-menu-item index="new">最新文章</el-menu-item>
                 <el-menu-item index="hot">热门文章</el-menu-item>
                 <el-sub-menu index="type">
-                    <template #title>标签分类</template>
-                    <el-menu-item index="type1">item one</el-menu-item>
-<!--                    后面实例定义一个数组来查询类型值-->
+                  <template #title>标签分类</template>
+                  <el-menu-item index="self">关于自我</el-menu-item>
+                  <el-menu-item index="teach">教育</el-menu-item>
+                  <el-menu-item index="since">科普</el-menu-item>
+                  <el-menu-item index="mood">情绪</el-menu-item>
+                  <el-menu-item index="none">无</el-menu-item>
+                  <!--                    后面实例定义一个数组来查询类型值-->
                 </el-sub-menu>
-                <el-menu-item index="more">More&#10148;</el-menu-item>
-            </el-menu>
+                <el-menu-item index="more" >More&#10148;</el-menu-item>
+              </el-menu>
+            </div>
+
+            <router-link to="/essay_upload">
+              <el-image style="width:40px;height: 40px;margin: auto" fit="cover" :src="host+'/edit.png'"></el-image>
+            </router-link>
+          </div>
             <hr>
             <div class="essay" >
                 <div v-for="(detail,detail_) in essay[n]" :key="detail_" class="essay-box">
                     <div class="essay-draw">
-                        <img :src=detail.img alt="暂无图片">
+                      <img v-if="detail.type==='情绪'" :src="host+'/essay/essay_mood_img.jpg'" alt="暂无图片">
+                      <img v-else-if="detail.type==='关于自我'" :src="host+'/essay/essay_self_img.jpg'" alt="暂无图片">
+                      <img v-else-if="detail.type==='科普'" :src="host+'/essay/essay_since_img.jpg'" alt="暂无图片">
+                      <img v-else-if="detail.type==='教育'" :src="host+'/essay/essay_teach_img.jpg'" alt="暂无图片">
+                      <img v-else :src="host+'/essay/essay_none_img.jpg'" alt="暂无图片">
                         <!--                图片-->
                     </div>
 
-                    <div class="essay-liter" >
-                        <router-link :to="'/essay_body?id='+detail.essay_id" >
+                    <div class="essay-liter">
+                        <router-link :to="'/essay_body?id='+Base64.encode(detail.essay_id)" >
                             <!--                链接-->
                             <p>{{detail.title}}</p>
                             <!--                题目-->
@@ -47,51 +63,25 @@
 <script lang="ts" setup>
     import {ref} from 'vue';
     import axios from "axios";
+    import store from "@/store";
+    import {EditPen} from '@element-plus/icons-vue';
+    import {Base64} from "js-base64";
 
     let n =ref('new');
     const activeIndex2 = ref('new');
     const handleSelect = (key: string, keyPath: string[]) => {
         n.value=key;
     };
-
+    const host = store.state.host;
     const essay = (await axios.get('/api/web/essay/essay_index')).data
-    // const props=defineProps({
-    //     essay:Object,
-    // })
-
-
-    // let essay = document.getElementsByClassName("essay");
-    // let title = document.getElementsByClassName("title-txt");
-    // for(let l=0;l<essay.length;l++){
-    //     essay[l].style.display = "none";
-    // }
-    // essay[0].style.display = "flex";
-    // title[0].style.border= "1px solid cornflowerblue";
-    // title[0].style.color= "cornflowerblue";
-    //
-    //
-    // let change=(n:number)=>{
-    //     let essay = document.getElementsByClassName("essay");
-    //     let title = document.getElementsByClassName("title-txt");
-    //     for(let l=0;l<essay.length;l++){
-    //         essay[l].style.display = "none";
-    //         title[l].style.border= "";
-    //         title[l].style.color= "";
-    //     }
-    //     essay[n].style.display = "flex";
-    //     title[n].style.border= "1px solid cornflowerblue";
-    //     title[n].style.color= "cornflowerblue";
-    // }
 
 </script>
 
 <style lang="scss">
     .all-essay{
-
-        background-color: white;
-        min-width: 750px;
+      border-radius: 5px;
+        background-color: #ffffff6e;
         width: 100%;
-        max-width: 1000px;
         margin: auto;
 
     }

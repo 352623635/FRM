@@ -25,7 +25,7 @@ router.post('/', async (ctx, next) => {
             sql=`SELECT name,pwd,id,ms_token,avatar FROM ms_user where ${user_title}='${user}'`;
             const detail= await queryResult(sql);
             console.log(detail)
-            if (!detail){
+            if (detail==''){
                 ctx.body=returnMsg(400,'账户不存在，请先注册');
                 //是否已注册
             }else {

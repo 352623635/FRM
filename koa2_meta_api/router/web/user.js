@@ -52,18 +52,16 @@ router.post('/user_update',async ctx=>{
         return ;
     }
     const name=ctx.request.body.name;
-    const email=ctx.request.body.email;
-    const phone=ctx.request.body.phone;
     const gender=ctx.request.body.gender;
     const avatar=ctx.request.body.avatar;
-    if(!name||!email||!phone||!gender||!avatar){
+    if(!name||!gender||!avatar){
         ctx.body=returnMsg(400,'存在空值，请前端检查代码！');
         return
     }
-    const check_sql=`SELECT id FROM ms_user WHERE name='${name}' or email='${email}' or phone='${phone}'`;
+    const check_sql=`SELECT id FROM ms_user WHERE name='${name}'`;
     const check =await queryResult(check_sql);
     if (check.length>1||(check.length===1&&check[0].id!==id)){
-        ctx.body=returnMsg(400,'昵称、邮箱或者号码已被占用，请检查后重新传入！');
+        ctx.body=returnMsg(400,'昵称已被占用，请检查后重新传入！');
         return ;
     }
     //不允许信息重复
@@ -75,7 +73,7 @@ router.post('/user_update',async ctx=>{
         {id,pwd},'meta_smile',{expiresIn: '10h'}
     );
     //更新值，包括刚刚生成的token
-    const sql1 = `UPDATE ms_user SET name='${name}',email='${email}',phone=${phone},gender='${gender}',avatar='${avatar}',ms_token='${token}'  WHERE id=${id}`;
+    const sql1 = `UPDATE ms_user SET name='${name}',gender='${gender}',avatar='${avatar}',ms_token='${token}'  WHERE id=${id}`;
     await queryResult(sql1);
     // 取出值，包括刚刚存入的token
     const sql2=`SELECT name,email,phone,gender,mark,avatar,ms_token FROM ms_user WHERE id=${id}`;
@@ -90,7 +88,7 @@ router.get('/user_all_text',async ctx =>{
         essay:[],
         pour:[]
     }
-    const sql = `SELECT essay_id,img,title,type,preface,hot FROM ms_essay WHERE uid=${id}`;
+    const sql = `SELECT essay_id,title,type,preface,hot FROM ms_essay WHERE uid=${id}`;
     const sql1 = `SELECT * FROM ms_pour WHERE uid=${id}`;
     Text.essay = await queryResult(sql);
     Text.pour =await queryResult(sql1);

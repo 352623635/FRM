@@ -39,8 +39,17 @@ const routes: RouteRecordRaw[] = [
         component:()=>import('@/components/views/Userself.vue')
     },
     {
-        path: '/upload_self',
-        component:()=>import('@/components/views/Uploadself.vue')
+        path: '/update_self',
+        component:()=>import('@/components/views/Updateself.vue')
+    },
+    {
+        path: '/essay_upload',
+        component:()=>import('@/components/views/Essayupload.vue'),
+
+    },
+    {
+        path: '/essay_update',
+        component:()=>import('@/components/views/Essayupdate.vue')
     },
 ]
 // 路由模式：这里使用的是 hash 模式

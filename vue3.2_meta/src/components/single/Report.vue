@@ -3,6 +3,7 @@
         <div class="report">
 
             <el-menu
+                style="border-radius: 5px 5px 0 0 ;"
                     :default-active="activeIndex2"
                     active-text-color="black"
                     background-color="#17a4a942"
@@ -15,7 +16,7 @@
                 <el-menu-item index="new">情绪记录</el-menu-item>
                 <el-menu-item index="more">More&#10148;</el-menu-item>
             </el-menu>
-            <hr style="max-width: 1000px">
+            <hr style="width: 100%">
 
             <div class="report-body">
 
@@ -72,19 +73,17 @@
 <script setup>
     import store from '@/store';
     import * as echarts from 'echarts';
-    import {ref, onMounted, computed} from "vue";
+    import {ref, onMounted, computed, reactive} from "vue";
     import request from "../../utils/request";
     let date = new Date(Date.now());
     onMounted(()=>{
         console.log(document.getElementById('chart'));
         draw(date.getFullYear(),date.getMonth()+1,date.getDate());
     });
-    const info =(await request.post('/web/user/mood',{"user":sessionStorage.id})).data;
-    console.log(info);
-    const mark=info.mark[0] ;
+
     //
     let myChart=null;
-    let n=ref();
+    let n=ref('');
     let suggest=ref();
     const activeIndex2 = ref('new');
     const value1 = ref('');
@@ -111,10 +110,68 @@
         },
     ]
 
+    let info = ref();
+
+    const time = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+    const length = (Date.parse(time)-Date.parse('2022/2/22'))/86400000;
+
+
+    if(sessionStorage.data){
+      info.value = (await request.post('/web/user/mood',{"user":sessionStorage.id})).data;
+    }else {
+      info.value={
+        "date": [
+        ],
+        "report": ["2", "5", "6", "2", "7", "2", "6", "4", "5", "2", "5", "3", "5", "2", "5", "5", "6", "3", "2", "3", "3", "5","6"
+        ],
+        "mark": [
+          {
+            "mark": "情感大师，平平淡淡"
+          }
+        ],
+        "suggest": []
+      };
+      for(let l=0;l<=22;l++){
+        const day_= new Date(Date.parse(time)-(22-l)*86400000);
+        const day_time_= day_.getFullYear()+'/'+(day_.getMonth()+1)+'/'+day_.getDate();
+        info.value.date.push(day_time_);
+        info.value.suggest.push('当前为虚假数据，请登录以添加自己的记录！');
+      }
+    }
+//根据登陆情况赋值，未登录则为虚假值
+    console.log(info.value);
+    const mark=info.value.mark[0] ;
 
     const disabledDate = (time) => {
-        return time.getTime() > Date.now()||time.getTime() < Date.parse(new Date(info.date[0]))
+        return time.getTime() > Date.now()||time.getTime() < Date.parse(new Date(info.value.date[0]))
     }
+
+    let date_arr= reactive({
+      date:[],
+      suggest:[],
+      report:[]
+    });
+
+
+      for (let l=0;l<=length;l++){
+        const day = new Date(Date.parse(time)-(length-l)*86400000);
+        const day_time= day.getFullYear()+'/'+(day.getMonth()+1)+'/'+day.getDate();
+        if(info.value.date.indexOf(day_time)===-1){
+          date_arr.report.push('无记录');
+          date_arr.suggest.push('今天没有记录哦');
+          date_arr.date.push(day_time)
+        }else {
+          for (let i in info.value.date) {
+            if (info.value.date[i] === day_time) {
+              date_arr.report.push(info.value.report[i]);
+              date_arr.suggest.push(info.value.suggest[i]);
+              date_arr.date.push(day_time)
+            }
+          }
+        }
+      }
+      //获得时间数组，但是顺序为倒序
+      //数据不符合预期要求时，自我改造数据
 
 
     const draw=(y=Number,m=Number,d=Number)=>{
@@ -122,7 +179,7 @@
         let yAx=[];
         const time = y+'/'+ m+'/'+ d;
         //当前指定的时间
-        const date = info.date;
+        const date = date_arr.date;
         const mood=['悲伤','哀愁','忧郁','平淡','微笑','喜悦','激动'];
         //这里应该随显示日期变化而变化，而不是当前日期
 
@@ -132,10 +189,13 @@
             }
         }//新取n值
 
+
+
+
         if(n.value>=6){
             for (let i=0;i<7;i++){
                 xAx.push(date[n.value-6+i].slice(5));
-                yAx.push(mood[info.report[n.value-6+i]-1]);
+                yAx.push(mood[date_arr.report[n.value-6+i]-1]);
             }
         }else {
             for (let i=0;i<7;i++){
@@ -144,12 +204,12 @@
                     yAx.push('空值');
                 }else{
                     xAx.push(date[n.value-6+i].slice(5));
-                    yAx.push(mood[info.report[n.value-6+i]-1]);
+                    yAx.push(mood[date_arr.report[n.value-6+i]-1]);
                 }
             }
         }
         console.log(xAx,yAx);
-        suggest.value=info.suggest[n.value]
+        suggest.value=date_arr.suggest[n.value]
 
         if(myChart != null && myChart != "" && myChart != undefined){
             myChart.dispose();//解决echarts dom已经加载的报错
@@ -198,12 +258,11 @@
 
 <style lang="scss" scoped>
     .report{
-        background-color: white;
+      border-radius: 5px ;
+        background-color: #ffffff6e;
         width: 100%;
-        max-width: 1000px;
         margin: auto;
         padding-bottom: 50px;
-        min-width: 750px;
         .report-body{
             height: 400px;
             margin: 50px auto auto 2px;
