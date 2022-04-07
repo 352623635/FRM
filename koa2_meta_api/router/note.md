@@ -397,3 +397,66 @@ got push
 ```
 
 #####服务器运行的koa2接口框架处于冷处理而不是热更新
+
+
+#day7
+```js
+//图片删除（文件管理组件fs与path）
+const Router = require('koa-router');
+const router = new Router();
+const {returnMsg,queryResult,jwtVer} =require('../../utils');
+const fs = require('fs');
+const path = require('path');
+router.post('/',async (ctx)=>{
+
+    const img_url = ctx.request.body.url;
+    if(fs.existsSync(path.join(__dirname,`../../static${img_url}`))){
+        await fs.unlink(`${__dirname}../../../static${img_url}`,err => {
+                if (err) throw err;
+            });
+        ctx.body=returnMsg(200,'删除成功！');
+    }else {
+        ctx.body=returnMsg(400,'文件不存在！');
+    }
+});
+
+
+module.exports = router;
+
+//引入session
+app.keys=['secret'];
+app.use(session({
+    key: 'koa:sess', //cookie key (default is koa:sess)
+    maxAge: 86400000, // cookie的过期时间 maxAge in ms (default is 1 days)
+    overwrite: true, //是否可以overwrite    (默认default true)
+    httpOnly: true, //cookie是否只有服务器端可以访问 httpOnly or not (default true)
+    signed: true, //签名默认true
+    rolling: false, //在每次请求时强行设置cookie，这将重置cookie过期时间（默认：false）
+    renew: false, //(boolean) renew session when session is nearly expired,
+}, app));
+//引入nodemailer
+
+```
+
+
+```
+js随机数
+random*(max-min+1)+min
+
+history对象就是控制历史记录，可以拿来写面包屑；
+screen 屏幕参数，可以获取到屏幕大小，后续能用于写动态自适应
+
+document.querySelector()
+单项查询,包括标签名，类名，id都能查询
+
+innerText是文本，innerHtml是html标签文本
+
+document.body
+document.documentElement
+document.creatElement
+
+.appendChild(child)在一个标签末尾插入一个标签
+.insertBefore(child,traget)在一个父标签中某个标签前插入一个标签
+.replaceChild(child,traget)在一个父标签中，用一个标签替换另一个标签
+.removeChild()在一个父标签中删除子标签，可以用循环
+```

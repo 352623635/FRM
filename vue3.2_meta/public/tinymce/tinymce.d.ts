@@ -80,20 +80,16 @@ interface EventDispatcherSettings {
 }
 interface EventDispatcherConstructor<T extends NativeEventMap> {
     readonly prototype: EventDispatcher<T>;
-    isNative: (name: string) => boolean;
-
     new (settings?: EventDispatcherSettings): EventDispatcher<T>;
+    isNative: (name: string) => boolean;
 }
 declare class EventDispatcher<T> {
+    static isNative(name: string): boolean;
     private readonly settings;
     private readonly scope;
     private readonly toggleEvent;
     private bindings;
-
     constructor(settings?: Record<string, any>);
-
-    static isNative(name: string): boolean;
-
     fire<K extends string, U extends MappedEvent<T, K>>(name: K, args?: U): EditorEvent<U>;
     on<K extends string>(name: K, callback: false | ((event: EditorEvent<MappedEvent<T, K>>) => void), prepend?: boolean, extra?: {}): this;
     off<K extends string>(name?: K, callback?: (event: EditorEvent<MappedEvent<T, K>>) => void): this;
@@ -164,9 +160,8 @@ declare type EventUtilsEvent<T> = NormalizedEvent<T> & {
 };
 interface EventUtilsConstructor {
     readonly prototype: EventUtils;
-    Event: EventUtils;
-
     new (): EventUtils;
+    Event: EventUtils;
 }
 declare class EventUtils {
     static Event: EventUtils;
@@ -177,27 +172,17 @@ declare class EventUtils {
     private hasMouseEnterLeave;
     private mouseEnterLeave;
     private count;
-    private executeHandlers;
-
     constructor();
-
     bind<K extends keyof HTMLElementEventMap>(target: any, name: K, callback: EventUtilsCallback<HTMLElementEventMap[K]>, scope?: any): EventUtilsCallback<HTMLElementEventMap[K]>;
-
     bind<T = any>(target: any, names: string, callback: EventUtilsCallback<T>, scope?: any): EventUtilsCallback<T>;
-
     unbind<K extends keyof HTMLElementEventMap>(target: any, name: K, callback?: EventUtilsCallback<HTMLElementEventMap[K]>): this;
-
     unbind<T = any>(target: any, names: string, callback?: EventUtilsCallback<T>): this;
-
     unbind(target: any): this;
-
     fire(target: any, name: string, args?: {}): this;
-
     clean(target: any): this;
-
     destroy(): void;
-
     cancel<T = any>(e: EventUtilsEvent<T>): boolean;
+    private executeHandlers;
 }
 declare type DomQuerySelector<T extends Node> = string | T | T[] | DomQuery<T>;
 declare type DomQueryInitSelector<T extends Node> = DomQuerySelector<T> | Window;
@@ -415,6 +400,7 @@ interface AstNodeConstructor {
     create(name: string, attrs?: Record<string, string>): AstNode;
 }
 declare class AstNode {
+    static create(name: string, attrs?: Record<string, string>): AstNode;
     name: string;
     type: number;
     attributes?: Attributes$1;
@@ -427,11 +413,7 @@ declare class AstNode {
     prev?: AstNode;
     raw?: boolean;
     fixed?: boolean;
-
     constructor(name: string, type: number);
-
-    static create(name: string, attrs?: Record<string, string>): AstNode;
-
     replace(node: AstNode): AstNode;
     attr(name: string, value: string | null): AstNode | undefined;
     attr(name: Record<string, string | null>): AstNode | undefined;
@@ -1594,11 +1576,9 @@ interface BlobInfoImagePair {
 declare class NodeChange {
     private readonly editor;
     private lastPath;
-    private isSameElementPath;
-
     constructor(editor: Editor);
-
     nodeChanged(args?: any): void;
+    private isSameElementPath;
 }
 interface SelectionOverrides {
     showCaret: (direction: number, node: Element, before: boolean, scrollIntoView?: boolean) => Range | null;
@@ -1781,6 +1761,8 @@ interface DOMUtils {
     };
     findCommonAncestor: (a: Node, b: Node) => Node;
     toHex: (rgbVal: string) => string;
+    run<R, T extends Node>(this: DOMUtils, elm: T | T[], func: (node: T) => R, scope?: any): R;
+    run<R, T extends Node>(this: DOMUtils, elm: RunArguments<T>, func: (node: T) => R, scope?: any): false | R;
     getAttribs: (elm: string | Node) => NamedNodeMap | Attr[];
     isEmpty: (node: Node, elements?: Record<string, any>) => boolean;
     createRng: () => Range;
@@ -1803,10 +1785,6 @@ interface DOMUtils {
     destroy: () => void;
     isChildOf: (node: Node, parent: Node) => boolean;
     dumpRng: (r: Range) => string;
-
-    run<R, T extends Node>(this: DOMUtils, elm: T | T[], func: (node: T) => R, scope?: any): R;
-
-    run<R, T extends Node>(this: DOMUtils, elm: RunArguments<T>, func: (node: T) => R, scope?: any): false | R;
 }
 interface ClientRect {
     left: number;
@@ -1999,34 +1977,23 @@ declare class EditorCommands {
     private readonly editor;
     private selectionBookmark;
     private commands;
+    constructor(editor: Editor);
+    execCommand(command: string, ui?: boolean, value?: any, args?: any): boolean;
+    queryCommandState(command: string): boolean;
+    queryCommandValue(command: string): string;
+    addCommands<K extends keyof Commands>(commandList: Commands[K], type: K): void;
+    addCommands(commandList: Record<string, EditorCommandsCallback>): void;
+    addCommand(command: string, callback: EditorCommandCallback, scope?: any): void;
+    queryCommandSupported(command: string): boolean;
+    addQueryStateHandler(command: string, callback: () => boolean, scope?: any): void;
+    addQueryValueHandler(command: string, callback: () => string, scope?: any): void;
+    hasCustomCommand(command: string): boolean;
     private execNativeCommand;
     private isFormatMatch;
     private toggleFormat;
     private storeSelection;
     private restoreSelection;
     private setupCommands;
-
-    constructor(editor: Editor);
-
-    execCommand(command: string, ui?: boolean, value?: any, args?: any): boolean;
-
-    queryCommandState(command: string): boolean;
-
-    queryCommandValue(command: string): string;
-
-    addCommands<K extends keyof Commands>(commandList: Commands[K], type: K): void;
-
-    addCommands(commandList: Record<string, EditorCommandsCallback>): void;
-
-    addCommand(command: string, callback: EditorCommandCallback, scope?: any): void;
-
-    queryCommandSupported(command: string): boolean;
-
-    addQueryStateHandler(command: string, callback: () => boolean, scope?: any): void;
-
-    addQueryValueHandler(command: string, callback: () => string, scope?: any): void;
-
-    hasCustomCommand(command: string): boolean;
 }
 interface WindowParams {
     readonly inline?: 'cursor' | 'toolbar';
@@ -2272,6 +2239,7 @@ interface URISettings {
 }
 interface URIConstructor {
     readonly prototype: URI;
+    new (url: string, settings?: URISettings): URI;
     getDocumentBaseUrl: (loc: {
         protocol: string;
         host?: string;
@@ -2282,8 +2250,6 @@ interface URIConstructor {
         type: string;
         data: string;
     };
-
-    new (url: string, settings?: URISettings): URI;
 }
 interface SafeUriOptions {
     readonly allow_html_data_urls?: boolean;
@@ -2291,6 +2257,17 @@ interface SafeUriOptions {
     readonly allow_svg_data_urls?: boolean;
 }
 declare class URI {
+    static parseDataUri(uri: string): {
+        type: string;
+        data: string;
+    };
+    static isDomSafe(uri: string, context?: string, options?: SafeUriOptions): boolean;
+    static getDocumentBaseUrl(loc: {
+        protocol: string;
+        host?: string;
+        href?: string;
+        pathname?: string;
+    }): string;
     source: string;
     protocol: string;
     authority: string;
@@ -2306,23 +2283,7 @@ declare class URI {
     query: string;
     anchor: string;
     settings: URISettings;
-
     constructor(url: string, settings?: URISettings);
-
-    static parseDataUri(uri: string): {
-        type: string;
-        data: string;
-    };
-
-    static isDomSafe(uri: string, context?: string, options?: SafeUriOptions): boolean;
-
-    static getDocumentBaseUrl(loc: {
-        protocol: string;
-        host?: string;
-        href?: string;
-        pathname?: string;
-    }): string;
-
     setPath(path: string): void;
     toRelative(uri: string): string;
     toAbsolute(uri: string, noHost?: boolean): string;
@@ -2346,32 +2307,20 @@ interface EditorManager extends Observable<EditorManagerEventMap> {
     documentBaseURL: string;
     i18n: I18n;
     suffix: string;
+    add(this: EditorManager, editor: Editor): Editor;
     addI18n: (code: string, item: Record<string, string>) => void;
+    createEditor(this: EditorManager, id: string, settings: RawEditorSettings): Editor;
+    execCommand(this: EditorManager, cmd: string, ui: boolean, value: any): boolean;
+    get(this: EditorManager): Editor[];
+    get(this: EditorManager, id: number | string): Editor;
+    init(this: EditorManager, settings: RawEditorSettings): Promise<Editor[]>;
+    overrideDefaults(this: EditorManager, defaultSettings: Partial<RawEditorSettings>): void;
+    remove(this: EditorManager): void;
+    remove(this: EditorManager, selector: string | Editor): Editor | void;
+    setActive(this: EditorManager, editor: Editor): void;
+    setup(this: EditorManager): void;
     translate: (text: Untranslated) => TranslatedString;
     triggerSave: () => void;
-
-    add(this: EditorManager, editor: Editor): Editor;
-
-    createEditor(this: EditorManager, id: string, settings: RawEditorSettings): Editor;
-
-    execCommand(this: EditorManager, cmd: string, ui: boolean, value: any): boolean;
-
-    get(this: EditorManager): Editor[];
-
-    get(this: EditorManager, id: number | string): Editor;
-
-    init(this: EditorManager, settings: RawEditorSettings): Promise<Editor[]>;
-
-    overrideDefaults(this: EditorManager, defaultSettings: Partial<RawEditorSettings>): void;
-
-    remove(this: EditorManager): void;
-
-    remove(this: EditorManager, selector: string | Editor): Editor | void;
-
-    setActive(this: EditorManager, editor: Editor): void;
-
-    setup(this: EditorManager): void;
-
     _setBaseUrl(this: EditorManager, baseUrl: string): void;
 }
 interface EditorObservable extends Observable<EditorEventMap> {
@@ -2454,18 +2403,15 @@ declare class Shortcuts {
     private readonly editor;
     private readonly shortcuts;
     private pendingPatterns;
+    constructor(editor: Editor);
+    add(pattern: string, desc: string, cmdFunc: CommandFunc, scope?: any): boolean;
+    remove(pattern: string): boolean;
     private normalizeCommandFunc;
     private createShortcut;
     private hasModifier;
     private isFunctionKey;
     private matchShortcut;
     private executeShortcutAction;
-
-    constructor(editor: Editor);
-
-    add(pattern: string, desc: string, cmdFunc: CommandFunc, scope?: any): boolean;
-
-    remove(pattern: string): boolean;
 }
 interface Theme {
     ui?: any;
@@ -2659,9 +2605,8 @@ interface ScriptLoaderSettings {
 }
 interface ScriptLoaderConstructor {
     readonly prototype: ScriptLoader;
-    ScriptLoader: ScriptLoader;
-
     new (): ScriptLoader;
+    ScriptLoader: ScriptLoader;
 }
 declare class ScriptLoader {
     static ScriptLoader: ScriptLoader;
@@ -2698,18 +2643,13 @@ interface DomTreeWalkerConstructor {
 declare class DomTreeWalker {
     private readonly rootNode;
     private node;
+    constructor(startNode: Node, rootNode: Node);
+    current(): Node;
+    next(shallow?: boolean): Node;
+    prev(shallow?: boolean): Node;
+    prev2(shallow?: boolean): Node;
     private findSibling;
     private findPreviousNode;
-
-    constructor(startNode: Node, rootNode: Node);
-
-    current(): Node;
-
-    next(shallow?: boolean): Node;
-
-    prev(shallow?: boolean): Node;
-
-    prev2(shallow?: boolean): Node;
 }
 interface Version {
     major: number;
@@ -2859,9 +2799,8 @@ interface Color {
     parse: (value: string | RGB | HSV) => Color;
 }
 interface DebounceFunc<T extends (...args: any[]) => void> {
-    stop: () => void;
-
     (...args: Parameters<T>): void;
+    stop: () => void;
 }
 interface Delay {
     requestAnimationFrame: (callback: () => void, element?: HTMLElement) => void;
@@ -2912,18 +2851,14 @@ interface JSONRequestArgs extends JSONRequestSettings {
 }
 interface JSONRequestConstructor {
     readonly prototype: JSONRequest;
-    sendRPC: (o: JSONRequestArgs) => void;
-
     new (settings?: JSONRequestSettings): JSONRequest;
+    sendRPC: (o: JSONRequestArgs) => void;
 }
 declare class JSONRequest {
+    static sendRPC(o: JSONRequestArgs): void;
     settings: JSONRequestSettings;
     count: number;
-
     constructor(settings?: JSONRequestSettings);
-
-    static sendRPC(o: JSONRequestArgs): void;
-
     send(args: JSONRequestArgs): void;
 }
 interface KeyboardLikeEvent {
@@ -2980,37 +2915,32 @@ interface XHR extends Observable<XHREventMap> {
     send(this: XHR, settings: XHRSettings): void;
 }
 interface DOMUtilsNamespace {
+    new (doc: Document, settings: Partial<DOMUtilsSettings>): DOMUtils;
     DOM: DOMUtils;
     nodeIndex: (node: Node, normalized?: boolean) => number;
-
-    new (doc: Document, settings: Partial<DOMUtilsSettings>): DOMUtils;
 }
 interface RangeUtilsNamespace {
+    new (dom: DOMUtils): RangeUtils;
     compareRanges: (rng1: RangeLikeObject, rng2: RangeLikeObject) => boolean;
     getCaretRangeFromPoint: (clientX: number, clientY: number, doc: Document) => Range;
     getSelectedNode: (range: Range) => Node;
     getNode: (container: Node, offset: number) => Node;
-
-    new (dom: DOMUtils): RangeUtils;
 }
 interface AddOnManagerNamespace {
+    new <T>(): AddOnManager<T>;
     language: string | undefined;
     languageLoad: boolean;
     baseURL: string;
     PluginManager: PluginManager;
     ThemeManager: ThemeManager;
-
-    new <T>(): AddOnManager<T>;
 }
 interface BookmarkManagerNamespace {
-    isBookmarkNode: (node: Node) => boolean;
-
     (selection: EditorSelection): BookmarkManager;
+    isBookmarkNode: (node: Node) => boolean;
 }
 interface SaxParserNamespace {
-    findEndTag: (schema: Schema, html: string, startIndex: number) => number;
-
     new (settings?: SaxParserSettings, schema?: Schema): SaxParser;
+    findEndTag: (schema: Schema, html: string, startIndex: number) => number;
 }
 interface TinyMCE extends EditorManager {
     geom: {

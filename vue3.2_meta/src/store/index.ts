@@ -137,7 +137,7 @@ export default createStore({
         game_data:[
             {
                 "name":"迷宫",
-                "img":"http://127.0.0.1:3001/maze.png",
+                "img":"http://8.130.10.7:3001/maze.png",
                 "url":"https://www.17sucai.com/pins/demo-show?id=7202&st=rLC5H3vwTdnTkGEpLVu38g&e=1647561719"
             },
             {

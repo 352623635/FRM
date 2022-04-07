@@ -128,10 +128,10 @@ import {Base64} from "js-base64";
 let up_end=ref();
 const {host,session} = store.state ;
 let input = ref();
-let msg=ref()
+
 onMounted(()=>{
   input.value = document.getElementById('input');
-  msg.value = document.getElementById('msg');
+
 })
 const old=(await request.get('/web/user/user_self')).data[0];
 console.log(old)
@@ -192,7 +192,7 @@ const onSubmit =async () => {
     formData.append('avatar', input.value.files[0], input.value.files[0].name);
     await request.post('/web/avatar_upload',formData).then((res:any)=>{
           form.avatar_img=res.data;
-          msg.value.style.display='block';
+
         }
 
         // 这里返回的是你图片的地址
