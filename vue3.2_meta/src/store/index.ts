@@ -9,7 +9,7 @@ import request from "@/utils/request";
 
 export default createStore({
     state:{
-        host:'http://127.0.0.1:3001',
+        host:'http://8.130.10.7:3001',
         count:0,
         n:4,
         session:window.sessionStorage,

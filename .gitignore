@@ -8,10 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 vue3.2_meta/node_modules
-vue3.2_meta/dist
+
 vue3.2_meta/dist-ssr
 koa2_meta_api/node_modules
-koa2_meta_api/dist
+
 koa2_meta_api/dist-ssr
 *.local
 

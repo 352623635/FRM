@@ -11,7 +11,7 @@ export default defineConfig({
    
     proxy:{
       '/api':{
-        target:'http://127.0.0.1:3001',
+        target:'http://8.130.10.7:3001',
         rewrite:(path)=>path.replace(/^\/api/,''),
         //将页面内的/api重写为空值，只是一个标记手段
         ws:true,

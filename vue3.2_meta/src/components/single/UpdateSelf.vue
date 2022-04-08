@@ -86,7 +86,7 @@
                     <span>
                       <input type='checkbox' :checked="arr.length===checked.length" class='input-checkbox'  @click='checkedAll()'>全选
                     </span>
-                    <el-button :disabled="!checked.length>0" @click="DeleteChecked">删除</el-button>
+                    <el-button :disabled="checked.length===0" @click="DeleteChecked">删除</el-button>
                   </div>
 
                 </div>
