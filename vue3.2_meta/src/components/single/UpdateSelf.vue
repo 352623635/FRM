@@ -31,6 +31,12 @@
                   <el-option label="女" value="女"></el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="城市" prop="place">
+                <el-input v-model="form.place"  placeholder="更新所在城市" />
+              </el-form-item>
+              <el-form-item label="座右铭" prop="sign">
+                <el-input v-model="form.sign"  placeholder="换一个个性的座右铭" />
+              </el-form-item>
               <div style="display: flex;justify-content: flex-end;">
                 <el-button style="width: 60px" type="primary" @click="onSubmit">确认修改</el-button>
                 <el-button style="width: 90px" type="primary" @click="write">返回信息页</el-button>
@@ -91,8 +97,6 @@
 
                 </div>
               </div>
-
-
               <div v-else> 还没有文章哦</div>
 
 
@@ -102,8 +106,42 @@
 
             <el-footer>Footer</el-footer>
           </el-container>
-          <el-aside width="325px">
+          <el-aside width="325px" style="border-style: groove;border-radius: 5px">
+            <div v-if="essay.pour" class="ques-text">
+              <ul class="infinite-list" style="overflow: auto">
+                <li v-for="(ques,pour) in essay.pour" :key="pour">
+                  <div class="ques-text-txt">
+                    <div><p style="margin: 0;padding-top: 5px">{{ques.title}}</p></div>
+<!--                    <div style="font-size:12px;display:flex;height: 50px;margin: auto 5px">-->
+<!--                      <div style="width: 90%;">-->
+<!--                        <suspense>-->
+<!--                          <Criterion :id=ques.pour_id type="user" />-->
+<!--                        </suspense>-->
+<!--                      </div>-->
+<!--                      <div style="width: 50px;">热度：{{ques.hot}}</div>-->
+<!--                      &lt;!&ndash;                            插入组件&ndash;&gt;-->
+<!--                      &lt;!&ndash;                            <p style="width: 90%;font-size: 14px;color: gray;text-indent:2em;">{{ques.answer}}</p>&ndash;&gt;-->
+<!--                    </div>-->
+                  </div>
+                </li>
+              </ul>
+              <div class="infinite-check">
+                <div style="height: 50px;margin: 20px auto" v-for='(check, index) in essay.pour' :key="index">
+                  <!--判断checked是否包含当前fruit，checked.indexOf(fruit.fruitId)返回包含fruit的下标, 若不包含则返回-1-->
+                  <input type='checkbox' :checked="checked_pour.indexOf(check.pour_id)>=0" name='checkboxinput' class='input-checkbox' @click="CheckOne_pour(check.pour_id)">
+                </div>
+                <div style="display: flex;margin-top: -20px;flex-direction: column;justify-content: space-between;height: 60px">
+                    <span>
+                      <input type='checkbox' :checked="arr_pour.length===checked_pour.length" class='input-checkbox'  @click='checkedAll_pour()'>全选
+                    </span>
+                  <el-button :disabled="checked_pour.length===0" @click="DeleteChecked_pour">删除</el-button>
+                </div>
 
+              </div>
+            </div>
+            <div v-else>
+              还没有动态哦
+            </div>
           </el-aside>
         </el-container>
       </el-container>
@@ -139,7 +177,9 @@ const form = reactive({
   name: old.name,
   gender: old.gender,
   avatar:'src/assets/add_img.png',
-  avatar_img:''
+  avatar_img:'',
+  place:old.place!='null' ? old.place : '未设置' ,
+  sign:old.sign!='null' ? old.sign : '这个人十分神秘，什么都没留下！'
 })
 const rules = reactive({
 
@@ -163,9 +203,10 @@ const rules = reactive({
   ]
 })
 
-const emit = defineEmits(['update'])
+// const emit = defineEmits(['update'])
 const write = ()=>{
-  emit('update','read')
+  // emit('update','read')
+  window.location.href='#/user_self';
 }
 
 const onSubmit =async () => {
@@ -173,7 +214,9 @@ const onSubmit =async () => {
     const result =(await request.post('/web/user/user_update',{
       name:form.name,
       gender:form.gender,
-      avatar:old.avatar
+      avatar:old.avatar,
+      place:form.place,
+      sign:form.sign
     })).data;
     if(result.code === 400 ){
       alert(result.msg)
@@ -188,13 +231,10 @@ const onSubmit =async () => {
   else {
     let formData = new FormData()
     // 服务端接收文件的参数名，文件数据，文件名
-
     formData.append('avatar', input.value.files[0], input.value.files[0].name);
     await request.post('/web/avatar_upload',formData).then((res:any)=>{
           form.avatar_img=res.data;
-
         }
-
         // 这里返回的是你图片的地址
         //sever 是你的服务器名前缀，如果接口返回的地址是自带前缀的要自行调整
         //一般来讲接口返回的应该是一个不带前缀的url，因为开发环境和运行环境不能受限制
@@ -203,7 +243,9 @@ const onSubmit =async () => {
     const result =(await request.post('/web/user/user_update',{
       name:form.name,
       gender:form.gender,
-      avatar:form.avatar_img
+      avatar:form.avatar_img,
+      place:form.place,
+      sign:form.sign
     })).data;
     if(result.code===400){
       alert(result.msg);
@@ -276,14 +318,76 @@ const DeleteChecked=async ()=>{
 
 }
 
+
+let arr_pour =ref<any>([])
+for (let i in essay.value.pour){
+  arr_pour.value.push(essay.value.pour[i].pour_id);
+}
+
+let isCheckedAll_pour= false;
+let checked_pour=ref<any>([])
+const CheckOne_pour=(id:number)=>{
+  if(checked_pour.value.indexOf(id)>=0){
+    checked_pour.value.splice(checked_pour.value.indexOf(id), 1)
+  }else {
+    checked_pour.value.push(id)
+  }
+  console.log(checked_pour.value)
+}
+
+const checkedAll_pour=()=>{
+  isCheckedAll_pour = !isCheckedAll_pour
+  if (isCheckedAll_pour) {
+    // 全选时
+    checked_pour.value = []
+    arr_pour.value.forEach(function (id:number) {
+      checked_pour.value.push(id)
+    }, this)
+  } else {
+    checked_pour.value = []
+  }
+  console.log(checked_pour.value,arr_pour.value)
+}
+
+let isFirst_pour = true;
+const DeleteChecked_pour=async ()=>{
+  if (isFirst_pour){
+    alert('删除后将无法恢复，确认后再次点击删除将会执行该操作！')
+    isFirst_pour=false;
+  }else {
+    console.log(checked_pour.value)
+    // await request.post('/web/essay/essay_delete',{essay_id:checked.value}).then(res=>console.log(res));
+    // essay.value=(await request.get('/web/user/user_all_text',{params: {id:sessionStorage.id}})).data;
+  }
+
+}
+
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-checkbox{
+.infinite-check{
+  height: 550px;
+  padding-top: 5px;
+}
+.infinite-list{
+  height: 550px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  background-color: azure;
+}
+.ques-text{
+  display: flex;
+  .ques-text-txt{
+    height: 50px;
+    margin-top: 20px;
+  }
+}
+:deep(.el-checkbox){
   height: 100px;
   margin: 10px auto;
 }
-::v-deep .el-checkbox__label{
+:deep(.el-checkbox__label){
   display: none;
 }
 .essay{

@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
         component:()=>import('@/components/views/Userself.vue')
     },
     {
-        path: '/update_self',
+        path: '/user_update',
         component:()=>import('@/components/views/Updateself.vue')
     },
     {

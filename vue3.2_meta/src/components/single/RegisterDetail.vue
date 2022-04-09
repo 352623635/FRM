@@ -296,15 +296,15 @@
 </script>
 
 <style lang="scss" scoped>
-    ::v-deep .el-form-item__content{
+    :deep(.el-form-item__content){
       flex-wrap: nowrap;
     }
 
-    ::v-deep .el-form-item--default{
+    :deep(.el-form-item--default){
         margin-bottom: 10px;
 
     }
-    ::v-deep .el-form-item__label{
+    :deep(.el-form-item__label){
         color: black;
 
     }

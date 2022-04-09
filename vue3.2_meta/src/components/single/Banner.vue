@@ -29,14 +29,14 @@ const props=defineProps({
 </script>
 
 <style lang="scss" scoped>
-    ::v-deep .el-carousel__button{
+    :deep(.el-carousel__button){
         background-color: #f00;
     }
     .el-carousel{
         --el-carousel-arrow-size:60px;
         --el-carousel-arrow-font-size:60px
     }
-    ::v-deep .el-carousel__arrow{
+    :deep(.el-carousel__arrow){
         color: #006dffc7;
         background-color: #4e2b2b00;
     }

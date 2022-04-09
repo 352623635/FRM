@@ -17,7 +17,7 @@ router.get('/user_self',async ctx=>{
         ctx.body=returnMsg(400,'登录信息过期或用户不存在，请重新登录！');
         return ;
     }
-    const sql = `SELECT name,email,phone,gender,mark,avatar FROM ms_user WHERE id=${id}`;
+    const sql = `SELECT name,email,phone,gender,mark,avatar,place,sign FROM ms_user WHERE id=${id}`;
     const result=await queryResult(sql);
     ctx.body= result;
 })
@@ -54,6 +54,8 @@ router.post('/user_update',async ctx=>{
     const name=ctx.request.body.name;
     const gender=ctx.request.body.gender;
     const avatar=ctx.request.body.avatar;
+    const place=ctx.request.body.place!=='' ? ctx.request.body.place :null;
+    const sign=ctx.request.body.sign!=='' ? ctx.request.body.sign : null;
     if(!name||!gender||!avatar){
         ctx.body=returnMsg(400,'存在空值，请前端检查代码！');
         return
@@ -73,10 +75,10 @@ router.post('/user_update',async ctx=>{
         {id,pwd},'meta_smile',{expiresIn: '10h'}
     );
     //更新值，包括刚刚生成的token
-    const sql1 = `UPDATE ms_user SET name='${name}',gender='${gender}',avatar='${avatar}',ms_token='${token}'  WHERE id=${id}`;
+    const sql1 = `UPDATE ms_user SET name='${name}',gender='${gender}',avatar='${avatar}',ms_token='${token}',place='${place}',sign='${sign}'  WHERE id=${id}`;
     await queryResult(sql1);
     // 取出值，包括刚刚存入的token
-    const sql2=`SELECT name,email,phone,gender,mark,avatar,ms_token FROM ms_user WHERE id=${id}`;
+    const sql2=`SELECT name,email,phone,gender,mark,avatar,ms_token,place,sign FROM ms_user WHERE id=${id}`;
     const result=await queryResult(sql2);
     ctx.body=returnMsg(200,'修改信息成功！',result);
     //在前端要求所有字段

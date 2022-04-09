@@ -22,7 +22,7 @@
                   <el-descriptions-item>
                     <template #label>
                       <div class="cell-item"><el-icon><iphone /></el-icon>
-                        Telephone
+                        Phone
                       </div>
                     </template>
                     {{data[0].phone}}
@@ -36,7 +36,7 @@
                         Place
                       </div>
                     </template>
-                    Suzhou
+                    {{data[0].place!== 'null' ? data[0].place : '未设置'}}
                   </el-descriptions-item>
                   <el-descriptions-item>
                     <template #label>
@@ -69,9 +69,10 @@
                         <el-icon>
                           <office-building />
                         </el-icon>
+                        座右铭
                       </div>
                     </template>
-                    {{ data[0].mark }}
+                    {{ data[0].sign !== 'null' ? data[0].sign : '这个人很神秘，什么都没留下！' }}
                   </el-descriptions-item>
                 </el-descriptions>
               </div>
@@ -163,9 +164,10 @@
     // const load = () => {
     //   count.value += 2
     // }
-    const emit = defineEmits(['update'])
+    // const emit = defineEmits(['update'])
     const write = ()=>{
-      emit('update','write')
+      // emit('update','write')
+      window.location.href='#/user_update';
     }
     const data = (await request.get('/web/user/user_self')).data;
 
