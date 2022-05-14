@@ -4,9 +4,7 @@ import {createWebHashHistory, createRouter} from "vue-router";
 // 配置路由
 const routes = [
     {
-        path: '/',
-        name:'index',
-        title:'首页',
+        path:'/',
         component:()=>import("../components/home.vue")
     }
 ]

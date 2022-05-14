@@ -1,18 +1,10 @@
 <template>
-<h1>今天是{{date}}</h1>
+  <header></header>
 </template>
 
-<script>
-export default {
-  name: "home",
-  data(){
-    return{
-      date:new Date().toLocaleDateString()
-    }
-  }
-}
+<script setup>
+import header from "./header";
 </script>
 
 <style scoped>
-
 </style>
