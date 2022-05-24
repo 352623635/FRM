@@ -1,10 +1,13 @@
 <template>
-  <header></header>
+  <Header></Header>
+  <Footer></Footer>
 </template>
 
 <script setup>
-import header from "./header";
+import Header from "./header";
+import Footer from "./footer";
 </script>
 
 <style scoped>
+
 </style>

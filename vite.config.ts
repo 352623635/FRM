@@ -9,7 +9,7 @@ export default defineConfig({
         port: 8888,
         open: true
     },
-    resolve:{
-        extensions:['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
+    resolve: {
+        extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
     }
 })
