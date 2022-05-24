@@ -1,15 +1,9 @@
 // 引入模块
 import {createWebHashHistory, createRouter} from "vue-router";
-
-// 配置路由
-const routes = [
-    {
-        path:'/',
-        component:()=>import("../components/home.vue")
-    }
-]
+import routes from "./routes";
 
 //创建路由
+// @ts-ignore
 const router = createRouter({
     history: createWebHashHistory(),
     routes

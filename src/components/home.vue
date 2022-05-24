@@ -7,7 +7,6 @@
 import Header from "./header";
 import Footer from "./footer";
 </script>
-
 <style scoped>
 
 </style>

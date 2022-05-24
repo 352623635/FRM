@@ -16,9 +16,9 @@
     </div>
     <!--    登录注册-->
     <div class="log">
-      <a id="logup" @click="logupFormVisible=true">登录</a>
       <!--      登录对话框-->
-      <el-dialog v-model="logupFormVisible" destroy-on-close title="登录">
+      <a id="logup" @click="logupFormVisible=true">登录</a>
+      <el-dialog v-model="logupFormVisible" destroy-on-close title="登录" @close="logupClose(logupFormRef)">
         <el-form ref="logupFormRef" :model="logupForm" :rules="logupFormRules" label-position="left">
           <el-form-item label="用户名" label-width="140px" prop="username">
             <el-input v-model="logupForm.username"/>
@@ -34,10 +34,10 @@
       </span>
         </template>
       </el-dialog>
-      <a id="login" @click="loginFormVisible=true">注册</a>
       <!--      注册对话框-->
-      <el-dialog v-model="loginFormVisible" destroy-on-close title="注册" top="1.5vh">
-        <el-form ref="logupForm" :model="loginForm" :rules="loginFormRules" label-position="left" label-width="15px">
+      <a id="login" @click="loginFormVisible=true">注册</a>
+      <el-dialog v-model="loginFormVisible" destroy-on-close title="注册" top="1.5vh" @close="loginClose(loginFormRef)">
+        <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-position="left" label-width="15px">
           <el-form-item label="用户名" label-width="150px" prop="username">
             <el-input v-model="loginForm.username"/>
           </el-form-item>
@@ -66,19 +66,19 @@
 </template>
 
 <script setup>
-import {ref, reactive} from "vue";
+import {ref, unref} from "vue";
 
 const logupFormVisible = ref(false)
 const loginFormVisible = ref(false)
 
 
 // 登录表单
-const logupForm = reactive({
+const logupForm = ref({
   password: '',
   username: '',
 })
 // 注册表单
-const loginForm = reactive({
+const loginForm = ref({
   password1: '',
   password2: '',
   username: '',
@@ -97,10 +97,9 @@ const logupFormRules = {
   ]
 }
 
-
 //密码验证
 const passwordConfirm = (rule, value, cb) => {
-  if (value !== loginForm.password1) {
+  if (value !== loginForm.value.password1) {
     cb(new Error("两次密码不一致!"))
   }
 };
@@ -142,6 +141,15 @@ const loginFormRules = {
     {required: true, message: '请输入电话号码', trigger: 'blur'},
     {validator: checkMobile, trigger: 'blur'}
   ]
+}
+// 对话框的数据重置
+const logupFormRef = ref('')
+const logupClose = (el) => {
+  el.resetFields()
+}
+const loginFormRef = ref('')
+const loginClose = (el) => {
+  el.resetFields()
 }
 </script>
 
