@@ -47,23 +47,8 @@
             </div>
           </div>
         </div>
-        <div v-if="href!='#/login'&&href!='#/register'" class="tab-log-box">
-          <div v-if=!session.data class="to-log">
-            <a href="#/login">
-              <el-button>登录</el-button></a>
-          </div>
-          <div v-else class="to-logout">
-            <div >
-              <router-link to="/user_self">
-                <el-image fit="cover" :src="host+session.avatar" alt=""/>
-              </router-link>
-              <br>
-              <a @click="logout"><button>注销</button></a>
-            </div>
-            <div class="logout-a">
-              <a style="font-size: 12px;color: #1a1a1a">{{session.name}}</a>
-            </div>
-          </div>
+        <div>
+          <login />
         </div>
       </div>
       <div v-if="href!='#/login'&&href!='#/register'" class="tab-search">
@@ -79,6 +64,7 @@
 
 <script setup>
 import { Search,MagicStick } from '@element-plus/icons-vue'
+import login from './Login_tab.vue'
 import store from "@/store";
 import {defineProps} from "@vue/runtime-core";
 import {ref, computed, reactive,onMounted} from 'vue';
@@ -99,19 +85,11 @@ let n=Number(1/ props.path.length*100).toFixed(1)+"%";
 let session=computed(()=>{
   return store.state.session
 });
-let logout=()=>{
-  window.sessionStorage.removeItem('data');
-  window.sessionStorage.removeItem('name');
-  window.sessionStorage.removeItem('id');
-  window.sessionStorage.removeItem('avatar');
-  window.sessionStorage.removeItem('token');
-  window.sessionStorage.removeItem('mood');
-  window.location.href='/#/login';
-}
+
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .line{
   width: 100%;
   .link{

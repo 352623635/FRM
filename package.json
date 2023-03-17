@@ -9,7 +9,7 @@
     "pm2": "pm2 start npm -- run dev"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^0.2.7",
+    "@element-plus/icons-vue": "^2.0.10",
     "@vue/runtime-core": "latest",
     "ant-design-vue": "^1.7.8",
     "element-plus": "^2.0.1",

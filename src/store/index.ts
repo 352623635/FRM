@@ -23,15 +23,15 @@ export default createStore({
                 "url":"/"
             },
             {
-                "name":"情绪识别",
+                "name":"心理自评",
+                "url":"/BySelf"
+            },
+            {
+                "name":"情绪管理",
                 "url":""
             },
             {
-                "name":"心情故事",
-                "url":""
-            },
-            {
-                "name":"疾病预测",
+                "name":"交流社区",
                 "url":""
             },
             {

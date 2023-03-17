@@ -9,6 +9,10 @@ const routes: RouteRecordRaw[] = [
         path: '/',
         component:()=>import('@/components/views/Index.vue')
     },
+    {
+        path: '/BySelf',
+        component:()=>import('@/components/views/By_self.vue')
+    },
 
 ]
 // 路由模式：这里使用的是 hash 模式

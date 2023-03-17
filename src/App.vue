@@ -10,6 +10,9 @@
 </script>
 
 <style>
+  body{
+    margin: 0;
+  }
 #app {
 
 }
